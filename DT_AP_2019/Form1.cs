@@ -176,8 +176,8 @@ namespace DT_AP_2019
         private int ahkDelay { get; set; }
 
         // autobuff
-        private bool foundGloom { get; set; }
-        private bool foundAspd { get; set; }
+        private int foundGloom { get; set; }
+        private int foundAspd { get; set; }
 
         // ahk
         const int WM_LBUTTONDOWN = 0x0201;
@@ -397,10 +397,11 @@ namespace DT_AP_2019
                                 // pId matched
                                 roProc = pc1;
                                 roClient = new ROClient(roProc);
+                                statusBufferSize = 100;
                                 startAutoPotThread();
                                 startBuffThread();
                                 startAhkThread();
-                                statusBufferSize = 100;
+
 
                                 break;
                             }
@@ -492,29 +493,29 @@ namespace DT_AP_2019
             {
                 this.Invoke((MethodInvoker)delegate()
                 {
-                    foundGloom = false;
-                    foundAspd  = false;
-                    for (int i = 0; i <= statusBufferSize - 1; i++)
+                    foundGloom = 0;
+                    foundAspd  = 0;
+                    for (int i = 0; i <= 100 - 1; i++)
                     {
-                        currentBuffValue = roClient.ReadMemory(roClient.statusBufferAddress + i * 4);
+                        currentBuffValue = roClient.ReadMemory(roClient.statusBufferAddress + (i * 4));
 
                         if (currentBuffValue == 3)
-                            foundGloom = true;
+                            foundGloom = 1;
                         if (currentBuffValue == 39 || currentBuffValue == 38 || currentBuffValue == 37)
-                            foundAspd = true;
-                        if (foundAspd && foundGloom )
+                            foundAspd = 1;
+                        if (foundAspd == 1 && foundGloom == 1)
                             break;
                         if (currentBuffValue == 0xFFFFFFFF)
                             break;
                     }
 
-                    if (!foundGloom && cb_gloom.Checked)
+                    if (foundGloom == 0 && cb_gloom.Checked)
                     {
                         useBoxOfGloom();
                         Thread.Sleep(autobuffDelay);
                     }
 
-                    if (!foundAspd && cb_aspd.Checked)
+                    if (foundAspd == 0 && cb_aspd.Checked)
                     {
                         useAspdPotion();
                         Thread.Sleep(autobuffDelay);
