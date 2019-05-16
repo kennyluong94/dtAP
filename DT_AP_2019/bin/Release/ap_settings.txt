@@ -1,10 +1,10 @@
 hp_button = F8
 sp_button = F4
-ahk_list = F1:mc,F2:mc,F3:mc,F6,
+ahk_list = Y:mc,
 hp_percent = 90
 sp_percent = 99
-gloom_button = B
-aspd_button = N
+gloom_button = 8
+aspd_button = 9
 agiscroll_button = Q
 blesscroll_button = W
 ap_delay = 10

@@ -1,0 +1,10 @@
+C:\Users\Kenny\development\dtAP\DT_AP_2019\bin\Release\DT_AP_2019.exe.config
+C:\Users\Kenny\development\dtAP\DT_AP_2019\bin\Release\DT_AP_2019.exe
+C:\Users\Kenny\development\dtAP\DT_AP_2019\bin\Release\DT_AP_2019.pdb
+C:\Users\Kenny\development\dtAP\DT_AP_2019\obj\Release\DT_AP_2019.Form1.resources
+C:\Users\Kenny\development\dtAP\DT_AP_2019\obj\Release\DT_AP_2019.Properties.Resources.resources
+C:\Users\Kenny\development\dtAP\DT_AP_2019\obj\Release\DT_AP_2019.csproj.GenerateResource.Cache
+C:\Users\Kenny\development\dtAP\DT_AP_2019\obj\Release\DT_AP_2019.csproj.CoreCompileInputs.cache
+C:\Users\Kenny\development\dtAP\DT_AP_2019\obj\Release\DT_AP_2019.exe
+C:\Users\Kenny\development\dtAP\DT_AP_2019\obj\Release\DT_AP_2019.pdb
+C:\Users\Kenny\development\dtAP\DT_AP_2019\obj\Release\DT_AP_2019.csprojResolveAssemblyReference.cache

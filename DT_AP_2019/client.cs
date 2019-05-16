@@ -48,6 +48,11 @@ namespace DT_AP_2019
           return ReadCurrentSp() * 100 < percent * ReadMaxSp();
         }
 
+        public bool IsSpEmpty()
+        {
+            return ReadCurrentSp() * 100 < 3 * ReadMaxSp();
+        }
+
         public string HpLabel() {
           return string.Format("{0} / {1}", ReadCurrentHp(), ReadMaxHp());
         }

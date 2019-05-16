@@ -1,0 +1,14 @@
+hp_button = F8
+sp_button = F9
+ahk_list = 
+hp_percent = 90
+sp_percent = 20
+gloom_button = Q
+aspd_button = W
+agiscroll_button = Q
+blesscroll_button = Q
+ap_delay = 10
+autobuff_delay = 10
+autobuff_read_delay = 10
+spam_delay = 10
+

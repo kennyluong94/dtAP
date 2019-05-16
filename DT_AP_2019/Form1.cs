@@ -36,6 +36,8 @@ namespace DT_AP_2019
         private int hpPercent { get; set; }
         private int spPercent { get; set; }
 
+        private Keys holdKey = Keys.End;
+
         Dictionary<string, Keys> dictionary = new Dictionary<string, Keys>();
         List<Key> all_keys = new List<Key>(); // mouse click ahk
         List<Key> all_keysB = new List<Key>(); // no mouse click ahk
@@ -288,6 +290,7 @@ namespace DT_AP_2019
                 foreach (string ahkl in lb_ahk.Items)
                 {
                     allahk += string.Format("{0},", ahkl);
+
                     if (ahkl.Contains("mc"))
                     {
                         Key _ahk = (Key)k.ConvertFromString(ahkl.Split(':')[0]);
@@ -300,24 +303,23 @@ namespace DT_AP_2019
                     }
 
                 }
-
-
+                
                 string[] settings = {
-                                            string.Format("hp_button = {0}", cmb_hp.Text),
-                                            string.Format("sp_button = {0}", cmb_sp.Text),
-                                            string.Format("ahk_list = {0}", allahk),
-                                            string.Format("hp_percent = {0}", textBox1.Text),
-                                            string.Format("sp_percent = {0}", textBox2.Text),
-                                            string.Format("gloom_button = {0}", cmb_gloom.Text),
-                                            string.Format("aspd_button = {0}", cmb_aspd.Text),
-                                            string.Format("agiscroll_button = {0}", cmb_agi.Text),
-                                            string.Format("blesscroll_button = {0}", cmb_agi.Text),
-                                            string.Format("ap_delay = {0}", tb_apDelay.Text),
-                                            string.Format("autobuff_delay = {0}", tb_abuffDelay.Text),
-                                            string.Format("autobuff_read_delay = {0}", tb_abuffReadDelay.Text),
-                                            string.Format("spam_delay = {0}", tb_spamDelay.Text),
-                                            string.Format("", "")
-                                        };
+                                        string.Format("hp_button = {0}", cmb_hp.Text),
+                                        string.Format("sp_button = {0}", cmb_sp.Text),
+                                        string.Format("ahk_list = {0}", allahk),
+                                        string.Format("hp_percent = {0}", textBox1.Text),
+                                        string.Format("sp_percent = {0}", textBox2.Text),
+                                        string.Format("gloom_button = {0}", cmb_gloom.Text),
+                                        string.Format("aspd_button = {0}", cmb_aspd.Text),
+                                        string.Format("agiscroll_button = {0}", cmb_agi.Text),
+                                        string.Format("blesscroll_button = {0}", cmb_agi.Text),
+                                        string.Format("ap_delay = {0}", tb_apDelay.Text),
+                                        string.Format("autobuff_delay = {0}", tb_abuffDelay.Text),
+                                        string.Format("autobuff_read_delay = {0}", tb_abuffReadDelay.Text),
+                                        string.Format("spam_delay = {0}", tb_spamDelay.Text),
+                                        string.Format("", "")
+                                   };
 
                 File.WriteAllLines("ap_settings.txt", settings);
                 readSettingsFromUI();
@@ -402,11 +404,9 @@ namespace DT_AP_2019
                                 startBuffThread();
                                 startAhkThread();
 
-
                                 break;
                             }
                         }
-
                     }
                 });
 
@@ -435,16 +435,21 @@ namespace DT_AP_2019
             ahkThread.Start();
         }
 
-
+        private int hp_pot_count = 0;
         // autopot
         private void autopotThread()
         {
-            uint hp_pot_count = 0;
+           
             while (true)
             {
                 this.Invoke((MethodInvoker)delegate()
                 {
                     // check hp first
+
+                    if (roClient.IsSpEmpty()) {
+                        potSp();
+                    }
+
                     if (roClient.IsHpBelow(hpPercent))
                     {
                         potHp();
@@ -546,15 +551,20 @@ namespace DT_AP_2019
                         // with mouse click
                         if (Keyboard.IsKeyDown(ak))
                         {
+                            PostMessage(roProc.MainWindowHandle, 0x100, holdKey, 0);
                             while (Keyboard.IsKeyDown(ak))
                             {
                                 roClient.WriteMemory(roClient.mouseFixAddress, 0xFFFFFFFF);
                                 Keys thisk = (Keys)Enum.Parse(typeof(Keys), ak.ToString());
+
                                 PostMessage(roProc.MainWindowHandle, 0x100, thisk, 0);
+
                                 PostMessage(roProc.MainWindowHandle, WM_LBUTTONDOWN, 0, 0);
                                 PostMessage(roProc.MainWindowHandle, WM_LBUTTONUP, 0, 0);
+
                                 Thread.Sleep(ahkDelay);
                             }
+                            PostMessage(roProc.MainWindowHandle, 0x100, holdKey, 0);
                             roClient.WriteMemory(roClient.mouseFixAddress, 500);
                         }
                     }
@@ -580,6 +590,7 @@ namespace DT_AP_2019
                 Thread.Sleep(ahkDelay);
             }
         }
+        
 
         #endregion
 
